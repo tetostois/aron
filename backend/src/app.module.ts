@@ -8,23 +8,26 @@ import { UsersModule } from './users/users.module';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { MealsModule } from './meals/meals.module';
 import { OrdersModule } from './orders/orders.module';
+import { envConfig } from '../env.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      load: [() => envConfig],
     }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'sqlite',
-        database: configService.get('DB_DATABASE'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true, // Activé pour le développement
-        logging: true,
-      }),
-      inject: [ConfigService],
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: envConfig.DB_HOST,
+      port: envConfig.DB_PORT,
+      username: envConfig.DB_USERNAME,
+      password: envConfig.DB_PASSWORD,
+      database: envConfig.DB_DATABASE,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: envConfig.NODE_ENV !== 'production',
+      logging: envConfig.NODE_ENV === 'development',
+      migrations: ['dist/migrations/*{.ts,.js}'],
+      migrationsRun: false,
     }),
     AuthModule,
     UsersModule,

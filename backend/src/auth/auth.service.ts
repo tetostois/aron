@@ -22,6 +22,20 @@ export class AuthService {
     return result;
   }
 
+  async register(createUserDto: CreateUserDto): Promise<AuthResponseDto> {
+    // Vérifier si l'utilisateur existe déjà
+    const existingUser = await this.usersService.findByEmail(createUserDto.email);
+    if (existingUser) {
+      throw new ConflictException('Un utilisateur avec cet email existe déjà');
+    }
+
+    // Créer l'utilisateur
+    const user = await this.usersService.create(createUserDto);
+    
+    // Connecter automatiquement l'utilisateur après l'inscription
+    return this.login(user);
+  }
+
   async login(user: Partial<User> & { id: string; email: string }): Promise<AuthResponseDto> {
     if (!user.id || !user.email) {
       throw new Error('User ID and email are required');
@@ -51,14 +65,4 @@ export class AuthService {
     return response;
   }
 
-  async register(createUserDto: CreateUserDto): Promise<User> {
-    try {
-      return await this.usersService.create(createUserDto);
-    } catch (error) {
-      if (error.code === '23505') { // Code d'erreur PostgreSQL pour violation de contrainte unique
-        throw new ConflictException('Un utilisateur avec cet email existe déjà');
-      }
-      throw error;
-    }
-  }
 }

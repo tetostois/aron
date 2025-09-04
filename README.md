@@ -19,6 +19,98 @@ Application de livraison de nourriture au Cameroun avec NestJS (backend) et Next
 - NestJS CLI (pour le backend)
 - Next.js (pour le frontend)
 
+## 🛠️ Configuration du Frontend
+
+1. **Variables d'environnement**
+   Créez un fichier `.env.local` à la racine du dossier `food-delivery-app` avec les variables suivantes :
+   ```
+   NEXT_PUBLIC_API_URL=http://localhost:3000
+   ```
+
+2. **Installation des dépendances**
+   ```bash
+   cd food-delivery-app
+   npm install
+   ```
+
+3. **Démarrer l'application en mode développement**
+   ```bash
+   npm run dev
+   ```
+   L'application sera disponible à l'adresse : http://localhost:3001
+
+## 🚀 Configuration du Backend
+
+1. **Variables d'environnement**
+   Créez un fichier `.env` à la racine du dossier `backend` avec les variables suivantes :
+   ```
+   # Database
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USERNAME=root
+   DB_PASSWORD=votre_mot_de_passe
+   DB_DATABASE=food_delivery
+   
+   # JWT
+   JWT_SECRET=votre_secret_jwt
+   JWT_EXPIRES_IN=24h
+   ```
+
+2. **Installation des dépendances**
+   ```bash
+   cd backend
+   npm install
+   ```
+
+3. **Lancer les migrations**
+   ```bash
+   npm run typeorm migration:run
+   ```
+
+4. **Démarrer le serveur en mode développement**
+   ```bash
+   npm run start:dev
+   ```
+   L'API sera disponible à l'adresse : http://localhost:3000
+   La documentation Swagger sera disponible à : http://localhost:3000/api
+
+## 📱 Fonctionnalités de l'Application
+
+### Pour les Utilisateurs
+- Inscription et connexion sécurisées
+- Parcourir la liste des restaurants
+- Voir les détails d'un restaurant et son menu
+- Passer une commande
+- Suivre l'état de ses commandes
+- Historique des commandes passées
+
+### Pour les Administrateurs (via l'API)
+- Gérer les restaurants (CRUD)
+- Gérer les repas (CRUD)
+- Voir et gérer les commandes
+
+## 🛠️ Technologies Utilisées
+
+### Backend
+- NestJS
+- TypeORM
+- MySQL
+- JWT pour l'authentification
+- Swagger pour la documentation d'API
+
+### Frontend
+- Next.js 13+ avec App Router
+- React 18+
+- TypeScript
+- Tailwind CSS
+- Radix UI
+- React Hook Form
+- Zod pour la validation
+
+## 📝 Licence
+
+Ce projet est sous licence MIT.
+
 ## 🛠 Installation
 
 ### 1. Configuration de la base de données
